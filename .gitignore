@@ -4,7 +4,6 @@ __pycache__/
 
 Notebook/*.h5
 
-dataset/raw_data/*.csv
 dataset/clean_data/*.csv
 
 models/*.h5

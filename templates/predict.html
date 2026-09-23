@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% set active_page = 'home' %}
+{% set is_spam = (prediction|lower == 'spam') %}
+
+{% block title %}Result — {{ prediction }} | AI Spam Detector{% endblock %}
+
+{% block content %}
+<section class="result-section">
+  <div class="result-wrap">
+
+    <div class="result-card fade-in-up {{ 'result-card--spam' if is_spam else 'result-card--safe' }}"
+         data-prediction="{{ prediction }}"
+         data-confidence="{{ confidence }}"
+         role="region" aria-label="Analysis result">
+
+      <div class="result-status">
+        <span class="result-icon" aria-hidden="true">
+          {% if is_spam %}
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86l-8.18 14.14A1.5 1.5 0 0 0 3.5 20.5h17a1.5 1.5 0 0 0 1.39-2.5L13.71 3.86a1.5 1.5 0 0 0-2.42 0z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          {% else %}
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 12.5l2 2 4.5-5M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          {% endif %}
+        </span>
+        <div>
+          <span class="result-eyebrow">{{ 'Security warning' if is_spam else 'Analysis complete' }}</span>
+          <h1 class="result-title">{{ prediction }}</h1>
+        </div>
+      </div>
+
+      <div class="confidence-block">
+        <div class="confidence-ring-wrap">
+          <svg class="confidence-ring" width="140" height="140" viewBox="0 0 140 140" role="img"
+               aria-label="Confidence score visualization">
+            <circle class="ring-track" cx="70" cy="70" r="60" />
+            <circle class="ring-progress" id="ring-progress" cx="70" cy="70" r="60" />
+          </svg>
+          <div class="confidence-value">
+            <span id="confidence-number">0%</span>
+            <span class="confidence-label">confidence</span>
+          </div>
+        </div>
+        <div class="confidence-meta">
+          <p>
+            The model is <strong id="confidence-sentence">calculating…</strong> that this email is
+            <strong>{{ prediction|lower }}</strong>.
+          </p>
+          <p class="confidence-disclaimer">Automated results are a signal, not a guarantee — use judgment for sensitive decisions.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="email-preview-card fade-in-up">
+      <div class="email-preview-header">
+        <h2>Analyzed email</h2>
+        <div class="email-preview-actions">
+          <span class="char-count-pill" id="email-char-count">0 characters</span>
+          <button class="btn btn--ghost btn--sm" id="copy-email-btn" type="button">Copy email</button>
+        </div>
+      </div>
+      <div class="email-preview-body" id="email-preview-body" tabindex="0">{{ email_text }}</div>
+    </div>
+
+    <div class="result-actions fade-in-up">
+      <a href="{{ url_for('main.home') }}#analyzer" class="btn btn--primary">Analyze another email</a>
+      <button class="btn btn--ghost" id="copy-result-btn" type="button">Copy result</button>
+      <a href="{{ url_for('main.home') }}" class="btn btn--ghost">Back to home</a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.__RESULT__ = {
+    prediction: {{ prediction|tojson }},
+    confidence: {{ confidence|float|tojson }}
+  };
+</script>
+<script src="{{ url_for('static', filename='js/prediction.js') }}" defer></script>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% set active_page = 'about' %}
+{% block title %}About | AI Spam Detector{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+  <span class="eyebrow">About the project</span>
+  <h1>Email intelligence, explained</h1>
+  <p class="hero-sub">
+    SpamShieldAI is a lightweight tool that analyzes the text of an email and predicts
+    whether it is likely to be <strong>Spam</strong> or <strong>Safe</strong>, using a
+    machine-learning classification model behind a simple Flask backend.
+  </p>
+</section>
+
+<section class="about-grid">
+  <article class="about-card fade-in-up">
+    <h2>What it does</h2>
+    <p>
+      You provide the text of an email — subject and body — and the system returns a
+      predicted label along with a confidence score. This can be used interactively through
+      the web interface, or programmatically through the REST API.
+    </p>
+  </article>
+
+  <article class="about-card fade-in-up">
+    <h2>How classification works, at a high level</h2>
+    <p>
+      Spam detection systems like this one typically work by converting email text into a
+      numerical representation and passing it through a trained classification model. The
+      model has learned patterns from example emails to distinguish common characteristics
+      of unwanted or malicious messages from legitimate ones. The exact model architecture
+      and training details for this deployment are internal to the backend and not exposed here.
+    </p>
+  </article>
+
+  <article class="about-card fade-in-up">
+    <h2>Why email security matters</h2>
+    <p>
+      Spam and phishing emails remain one of the most common ways attackers attempt to steal
+      credentials, spread malware, or commit fraud. Being able to quickly assess whether a
+      message shows spam-like characteristics helps users pause before clicking suspicious
+      links or sharing sensitive information.
+    </p>
+  </article>
+
+  <article class="about-card fade-in-up">
+    <h2>Project features</h2>
+    <ul class="feature-list">
+      <li>Interactive web-based email analyzer</li>
+      <li>Confidence-scored predictions, not just a binary label</li>
+      <li>A REST API endpoint for programmatic integration</li>
+      <li>A public health-check endpoint for monitoring uptime</li>
+    </ul>
+  </article>
+</section>
+
+<section class="about-note">
+  <p>
+    This project is provided as a demonstration of applying a text-classification model to a
+    practical security use case. It is not a substitute for enterprise-grade email security
+    infrastructure.
+  </p>
+</section>
+{% endblock %}

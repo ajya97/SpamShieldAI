@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% set active_page = 'home' %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy fade-in-up">
+      <span class="eyebrow">AI-powered email intelligence</span>
+      <h1>Stop suspicious emails <span class="text-gradient">before they stop you.</span></h1>
+      <p class="hero-sub">
+        Paste any email and our classification model analyzes its content in real time,
+        flagging it as <strong>Safe</strong> or <strong>Spam</strong> with a confidence score —
+        so you can act with certainty, not guesswork.
+      </p>
+      <div class="hero-badges" aria-hidden="true">
+        <span class="badge">Content Analysis</span>
+        <span class="badge">Instant Results</span>
+        <span class="badge">REST API Available</span>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-in-up" aria-hidden="true">
+      <div class="scan-card">
+        <div class="scan-card-row">
+          <span class="scan-dot scan-dot--danger"></span>
+          <span class="scan-line scan-line--long"></span>
+        </div>
+        <div class="scan-card-row">
+          <span class="scan-dot"></span>
+          <span class="scan-line"></span>
+        </div>
+        <div class="scan-card-row">
+          <span class="scan-dot scan-dot--safe"></span>
+          <span class="scan-line scan-line--long"></span>
+        </div>
+        <div class="scan-progress"><div class="scan-progress-bar"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ANALYZER ===================== -->
+<section class="analyzer-section" id="analyzer">
+  <div class="analyzer-card fade-in-up">
+    <div class="analyzer-header">
+      <h2>Email Analyzer</h2>
+      <p>Paste the full email content below and let the model evaluate it.</p>
+    </div>
+
+    {% if error %}
+    <div class="alert alert--error" role="alert" id="server-error">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.29 3.86l-8.18 14.14A1.5 1.5 0 0 0 3.5 20.5h17a1.5 1.5 0 0 0 1.39-2.5L13.71 3.86a1.5 1.5 0 0 0-2.42 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <form id="analyzer-form" action="{{ url_for('main.predict') }}" method="POST" novalidate>
+      <div class="textarea-wrap">
+        <label for="email_text" class="field-label">Email content</label>
+        <textarea
+          id="email_text"
+          name="email_text"
+          class="email-textarea"
+          placeholder="Paste the email subject and body here… e.g. 'Congratulations! You've won a $1000 gift card, click here to claim now.'"
+          rows="10"
+          maxlength="20000"
+          aria-describedby="char-counter field-hint"
+          required
+        >{{ email_text if email_text else '' }}</textarea>
+        <div class="textarea-footer">
+          <span id="field-hint" class="field-hint">Minimum 5 characters required</span>
+          <span id="char-counter" class="char-counter">0 / 20000</span>
+        </div>
+      </div>
+
+      <div class="analyzer-actions">
+        <div class="analyzer-actions-left">
+          <button type="button" class="btn btn--ghost" id="example-btn">Load example</button>
+          <button type="button" class="btn btn--ghost" id="clear-btn">Clear</button>
+        </div>
+        <button type="submit" class="btn btn--primary" id="analyze-btn">
+          <span class="btn-label">Analyze Email</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===================== ABOUT SNAPSHOT ===================== -->
+<section class="how-it-works">
+  <div class="section-heading">
+    <span class="eyebrow">How it works</span>
+    <h2>From raw text to a confident verdict</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card fade-in-up">
+      <span class="step-index">01</span>
+      <h3>Submit content</h3>
+      <p>Paste an email's text into the analyzer — no forwarding or account access required.</p>
+    </div>
+    <div class="step-card fade-in-up">
+      <span class="step-index">02</span>
+      <h3>Model inference</h3>
+      <p>A trained classifier evaluates language patterns commonly associated with spam.</p>
+    </div>
+    <div class="step-card fade-in-up">
+      <span class="step-index">03</span>
+      <h3>Confidence score</h3>
+      <p>You receive a clear Safe/Spam label alongside a percentage confidence score.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== API TEASER ===================== -->
+<section class="api-teaser">
+  <div class="api-teaser-card fade-in-up">
+    <div>
+      <span class="eyebrow">Developers</span>
+      <h2>Prefer to integrate directly?</h2>
+      <p>Call the classifier from your own app with two simple REST endpoints.</p>
+    </div>
+    <a href="{{ url_for('main.api_docs') }}" class="btn btn--primary">View API docs</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/prediction.js') }}" defer></script>
+{% endblock %}

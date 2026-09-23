@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% set active_page = 'api' %}
+{% block title %}API Reference | AI Spam Detector{% endblock %}
+
+{% block content %}
+<section class="api-hero">
+  <span class="eyebrow">Developers</span>
+  <h1>REST API reference</h1>
+  <p class="hero-sub">
+    Integrate spam detection directly into your own applications using two simple,
+    stable endpoints. No authentication is required for either.
+  </p>
+</section>
+
+<section class="api-section">
+  <div class="api-grid">
+    <div class="api-card fade-in-up">
+      <div class="api-card-head">
+        <span class="method-tag method-tag--post">POST</span>
+        <code>/api/predict</code>
+      </div>
+      <p>Submit email text as JSON and receive a prediction with a confidence score.</p>
+
+      <span class="code-label">Request headers</span>
+      <pre class="code-block"><code>Content-Type: application/json</code></pre>
+
+      <span class="code-label">Example request</span>
+      <pre class="code-block"><code>{
+  "email_text": "Congratulations! You have won..."
+}</code></pre>
+
+      <span class="code-label">Example response <em>(illustrative only)</em></span>
+      <pre class="code-block"><code>{
+  "success": true,
+  "prediction": "Spam",
+  "confidence": 0.94
+}</code></pre>
+
+      <span class="code-label">Error response <em>(e.g. missing field)</em></span>
+      <pre class="code-block"><code>{
+  "success": false,
+  "error": "email_text is required"
+}</code></pre>
+
+      <span class="code-label">cURL example</span>
+      <pre class="code-block"><code>curl -X POST https://your-domain.com/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"email_text": "Congratulations! You have won..."}'</code></pre>
+    </div>
+
+    <div class="api-card fade-in-up">
+      <div class="api-card-head">
+        <span class="method-tag method-tag--get">GET</span>
+        <code>/api/health</code>
+      </div>
+      <p>Check whether the API service is currently operational — useful for uptime monitors.</p>
+
+      <span class="code-label">Example response</span>
+      <pre class="code-block"><code>{
+  "status": "healthy",
+  "service": "Spam email Detector API"
+}</code></pre>
+
+      <div class="live-status-check">
+        <span>Live status:</span>
+        <span class="status-pill" id="status-pill-inline">
+          <span class="status-dot" id="status-dot-inline"></span>
+          <span id="status-text-inline">Checking…</span>
+        </span>
+      </div>
+
+      <span class="code-label">cURL example</span>
+      <pre class="code-block"><code>curl https://your-domain.com/api/health</code></pre>
+    </div>
+  </div>
+
+  <div class="api-note fade-in-up">
+    <p>
+      Response values above under "Example response" are illustrative only and do not
+      represent an actual prediction. The live status pill reflects the real, current
+      result of <code>/api/health</code>.
+    </p>
+  </div>
+</section>
+{% endblock %}

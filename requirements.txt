@@ -2,15 +2,6 @@
 Flask==3.0.3
 gunicorn==22.0.0
 
-# --- Required by src/predicter.py ---
-# The provided backend only shows `from src.predicter import predicter`.
-# The actual libraries needed here depend on how predicter.py loads/runs
-# its model. Uncomment whichever of these predicter.py actually imports —
-# do not install packages it doesn't use.
-# scikit-learn==1.5.1
-# joblib==1.4.2
-# numpy==1.26.4
-# pandas==2.2.2
-
-# --- Development only (do not deploy) ---
-# pytest==8.2.2
+numpy
+onnx
+onnxruntime
